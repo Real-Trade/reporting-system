@@ -4,22 +4,33 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.OffsetDateTime;
 
 @Entity
 public class Admin {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int adminId;
-
     private String firstName;
-
     private  String lastName;
-
     private String email;
-
     private String password;
-
     private int status;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
+
+    public Admin() {
+    }
+
+    public Admin(String firstName, String lastName, String email, String password, int status) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.status = status;
+        this.createdAt = OffsetDateTime.now();
+        this.updatedAt = OffsetDateTime.now();
+    }
 
     public int getAdminId() {
         return adminId;
@@ -69,5 +80,20 @@ public class Admin {
         this.status = status;
     }
 
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(OffsetDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }
 

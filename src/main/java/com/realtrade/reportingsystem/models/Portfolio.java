@@ -1,6 +1,7 @@
 package com.realtrade.reportingsystem.models;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Entity
@@ -8,27 +9,21 @@ public class Portfolio {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int portfolioId;
-
     private String portfolioName;
-
-    private String createdAt;
-
-    private String updatedAt;
-
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
     private int status;
-
     @JoinColumn(name = "client_id")
     @ManyToOne
     private Client client;
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "portfolio_id")
     private List<ClientOrder> orders;
 
-    public Portfolio(String portfolioName, String createdAt, String updatedAt, int status) {
+    public Portfolio(String portfolioName, int status) {
         this.portfolioName = portfolioName;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.createdAt = OffsetDateTime.now();
+        this.updatedAt = OffsetDateTime.now();
         this.status = status;
     }
 
@@ -52,19 +47,19 @@ public class Portfolio {
         this.portfolioName = portfolioName;
     }
 
-    public String getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getUpdatedAt() {
+    public OffsetDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -82,5 +77,13 @@ public class Portfolio {
 
     public void setOrders(List<ClientOrder> orders) {
         this.orders = orders;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }

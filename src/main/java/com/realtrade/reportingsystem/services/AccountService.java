@@ -19,7 +19,7 @@ public class AccountService {
     }
 
     @Transactional
-    public Optional<Account> withdrawFunds(double amount, int accountId) {
+    public Optional<Account> withdrawFunds(int accountId, double amount) {
         Optional<Account> account = getAccountById(accountId);
         if(account.isPresent()) {
             account.get().setBalance(account.get().getBalance() - amount);
@@ -29,7 +29,7 @@ public class AccountService {
     }
 
     @Transactional
-    public Optional<Account> depositFunds(double amount, int accountId) {
+    public Optional<Account> depositFunds(int accountId, double amount) {
         Optional<Account> account = getAccountById(accountId);
         if(account.isPresent()) {
             account.get().setBalance(account.get().getBalance() + amount);
@@ -42,17 +42,27 @@ public class AccountService {
         return accountDao.findById(accountId);
     }
 
+    public Optional<Account> getAccountByClientId(int clientId) {
+        return accountDao.getAccountByClientId(clientId);
+    }
+
     public List<Account> getAllAccounts() {
         return accountDao.findAll();
     }
 
     public Account createAccount(Account account) {
+        //generate account number
+        //
         accountDao.save(account);
         return account;
     }
 
-    public Account updateAccount(Account account) {
-        accountDao.save(account);
+    public Account updateAccount(int accountId, Account account) {
+        Optional<Account> existingAccount = accountDao.findById(accountId);
+        if(existingAccount.isPresent()) {
+
+            accountDao.save(existingAccount.get());
+        }
         return account;
     }
 

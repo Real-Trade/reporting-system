@@ -1,5 +1,6 @@
 package com.realtrade.reportingsystem.models;
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Entity
@@ -7,28 +8,30 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-
     private int clientId;
-
     private String firstName;
-
     private  String lastName;
-
     private String email;
-
     private String password;
-
-    private int accountNumber;
-    private String createdAt;
-
-    private String updateAt;
-
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true)
     private Account account;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true)
     private List<Portfolio> portfolio;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true)
+    private List<ClientOrder> orders;
 
+    public Client() {}
+
+    public Client(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.createdAt = OffsetDateTime.now();
+        this.updatedAt = OffsetDateTime.now();
+    }
 
     public int getClientId() {
         return clientId;
@@ -70,28 +73,20 @@ public class Client {
         this.password = password;
     }
 
-    public int getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(int accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public String getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getUpdateAt() {
-        return updateAt;
+    public OffsetDateTime getUpdateAt() {
+        return updatedAt;
     }
 
-    public void setUpdateAt(String updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdateAt(OffsetDateTime updateAt) {
+        this.updatedAt = updateAt;
     }
 
     public int getStatus() {
@@ -110,5 +105,21 @@ public class Client {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public List<Portfolio> getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(List<Portfolio> portfolio) {
+        this.portfolio = portfolio;
+    }
+
+    public List<ClientOrder> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<ClientOrder> orders) {
+        this.orders = orders;
     }
 }

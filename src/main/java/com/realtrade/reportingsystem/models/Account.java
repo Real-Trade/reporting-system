@@ -1,17 +1,32 @@
 package com.realtrade.reportingsystem.models;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 
 @Entity
 public class Account {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int accountId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int accountNumber;
     private  double balance;
-
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
     @JoinColumn(name = "client_id")
     @OneToOne
     private Client client;
+
+    public Account() {
+
+    }
+
+    public Account(double balance, Client client) {
+        this.client = client;
+        this.balance = balance;
+        this.createdAt = OffsetDateTime.now();
+        this.updatedAt = OffsetDateTime.now();
+    }
 
     public int getAccountId() {
         return accountId;
@@ -36,4 +51,29 @@ public class Account {
     public void setBalance(double balance) {
         this.balance = balance;
     }
+
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(OffsetDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(int accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
 }
