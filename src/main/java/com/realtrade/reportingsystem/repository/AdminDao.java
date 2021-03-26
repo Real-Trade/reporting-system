@@ -6,10 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AdminDao extends JpaRepository<Admin, Integer> {
 
     @Query("select a from Admin a where a.status = 1")
     List<Admin> getAllActiveAdmins();
+
+    Optional<Admin> getAdminByEmail(String email);
+
 }

@@ -21,8 +21,7 @@ public class Account {
 
     }
 
-    public Account(double balance, Client client) {
-        this.client = client;
+    public Account(double balance) {
         this.balance = balance;
         this.createdAt = OffsetDateTime.now();
         this.updatedAt = OffsetDateTime.now();
@@ -40,7 +39,7 @@ public class Account {
         return client;
     }
 
-    public void setClientId(Client client) {
+    public void setClient(Client client) {
         this.client = client;
     }
 

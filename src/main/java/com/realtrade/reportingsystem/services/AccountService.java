@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ public class AccountService {
         Optional<Account> account = getAccountById(accountId);
         if(account.isPresent()) {
             account.get().setBalance(account.get().getBalance() - amount);
+            account.get().setUpdatedAt(OffsetDateTime.now());
             accountDao.save(account.get());
         }
         return account;
@@ -33,23 +35,28 @@ public class AccountService {
         Optional<Account> account = getAccountById(accountId);
         if(account.isPresent()) {
             account.get().setBalance(account.get().getBalance() + amount);
+            account.get().setUpdatedAt(OffsetDateTime.now());
             accountDao.save(account.get());
         }
         return account;
     }
 
+    @Transactional
     public Optional<Account> getAccountById(int accountId) {
         return accountDao.findById(accountId);
     }
 
+    @Transactional
     public Optional<Account> getAccountByClientId(int clientId) {
         return accountDao.getAccountByClientId(clientId);
     }
 
+    @Transactional
     public List<Account> getAllAccounts() {
         return accountDao.findAll();
     }
 
+    @Transactional
     public Account createAccount(Account account) {
         //generate account number
         //
@@ -57,13 +64,16 @@ public class AccountService {
         return account;
     }
 
-    public Account updateAccount(int accountId, Account account) {
+    @Transactional
+    public Optional<Account> updateAccount(int accountId, Account account) {
         Optional<Account> existingAccount = accountDao.findById(accountId);
         if(existingAccount.isPresent()) {
-
+            existingAccount.get().setAccountNumber(account.getAccountNumber());
+            existingAccount.get().setBalance(account.getBalance());
+            existingAccount.get().setUpdatedAt(OffsetDateTime.now());
             accountDao.save(existingAccount.get());
         }
-        return account;
+        return existingAccount;
     }
 
 }

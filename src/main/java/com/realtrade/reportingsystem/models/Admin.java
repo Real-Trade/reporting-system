@@ -1,9 +1,6 @@
 package com.realtrade.reportingsystem.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.OffsetDateTime;
 
 @Entity
@@ -13,6 +10,7 @@ public class Admin {
     private int adminId;
     private String firstName;
     private  String lastName;
+    @Column(unique = true)
     private String email;
     private String password;
     private int status;

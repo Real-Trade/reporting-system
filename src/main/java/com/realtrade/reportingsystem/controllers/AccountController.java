@@ -1,5 +1,6 @@
 package com.realtrade.reportingsystem.controllers;
 
+import com.realtrade.reportingsystem.dto.AccountFund;
 import com.realtrade.reportingsystem.models.Account;
 import com.realtrade.reportingsystem.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public Account createAccount(Account account) {
+    public Account createAccount(@RequestBody Account account) {
         return accountService.createAccount(account);
     }
 
@@ -39,17 +40,16 @@ public class AccountController {
 
     @PutMapping(path = "/{accountId}/update")
     public Account updateAccount(@PathVariable(name = "accountId") int accountId, @RequestBody Account account) {
-        return accountService.updateAccount(accountId, account);
+        return accountService.updateAccount(accountId, account).orElseThrow();
     }
 
     @PutMapping(path = "/{accountId}/withdraw")
-    public Account withdrawFunds(int accountId, double amount) {
-        return accountService.withdrawFunds(accountId, amount).orElseThrow();
+    public Account withdrawFunds(@PathVariable(name = "accountId") int accountId,@RequestBody AccountFund amount) {
+        return accountService.withdrawFunds(accountId, amount.getAmount()).orElseThrow();
     }
 
-    @PutMapping(path = "/accountId/deposit")
-    public Account depositFunds(int accountId, double amount) {
-        return accountService.depositFunds(accountId, amount).orElseThrow();
+    @PutMapping(path = "/{accountId}/deposit")
+    public Account depositFunds(@PathVariable(name = "accountId") int accountId,@RequestBody AccountFund accountFund) {
+        return accountService.depositFunds(accountId, accountFund.getAmount()).orElseThrow();
     }
-
 }

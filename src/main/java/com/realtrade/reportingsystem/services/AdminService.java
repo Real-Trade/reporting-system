@@ -3,10 +3,13 @@ package com.realtrade.reportingsystem.services;
 import com.realtrade.reportingsystem.models.Admin;
 import com.realtrade.reportingsystem.repository.AdminDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class AdminService  {
     private AdminDao adminDao;
 
@@ -17,8 +20,10 @@ public class AdminService  {
 
     //create admin
     public Admin createAdmin(Admin admin) {
-        adminDao.save(admin);
-        return admin;
+        Optional<Admin> adminOptional = adminDao.getAdminByEmail(admin.getEmail());
+        if(adminOptional.isPresent()) {
+            throw new IllegalStateException("Admin already exists");
+        } else return adminDao.save(admin);
     }
 
     public Optional<Admin> getAdminById(int adminId) {
@@ -35,8 +40,18 @@ public class AdminService  {
     }
 
     //update admin
-    public Admin updateAdmin(Admin adminUpdate) {
-        return adminDao.save(adminUpdate);
+    public Optional<Admin> updateAdmin(int adminId, Admin adminUpdate) {
+        Optional<Admin> adminOptional = getAdminById(adminId);
+        if(adminOptional.isPresent()) {
+            Admin admin = adminOptional.get();
+            admin.setStatus(adminUpdate.getStatus());
+            admin.setFirstName(adminUpdate.getFirstName());
+            admin.setLastName(adminUpdate.getLastName());
+            admin.setEmail(adminUpdate.getEmail());
+            admin.setUpdatedAt(OffsetDateTime.now());
+            adminDao.save(admin);
+        }
+        return adminOptional;
     }
 
     //delete admin

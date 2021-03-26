@@ -11,15 +11,17 @@ public class Client {
     private int clientId;
     private String firstName;
     private  String lastName;
+    @Column(unique = true)
     private String email;
     private String password;
+    private int status;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true)
-    private Account account;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true)
+//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true)
+//    private Account account;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Portfolio> portfolio;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ClientOrder> orders;
 
     public Client() {}
@@ -97,15 +99,13 @@ public class Client {
         this.status = status;
     }
 
-    private int status;
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
+//    public Account getAccount() {
+//        return account;
+//    }
+//
+//    public void setAccount(Account account) {
+//        this.account = account;
+//    }
 
     public List<Portfolio> getPortfolio() {
         return portfolio;

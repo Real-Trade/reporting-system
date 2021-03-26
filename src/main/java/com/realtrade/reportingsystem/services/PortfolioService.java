@@ -20,6 +20,10 @@ public class PortfolioService {
         this.portfolioDao = portfolioDao;
     }
 
+    public Portfolio createPortfolio(Portfolio portfolio) {
+        return portfolioDao.save(portfolio);
+    }
+
     public Portfolio getPortfolioById(int portfolioId) {
         return portfolioDao.findById(portfolioId).orElseThrow(() ->
             new IllegalStateException("portfolio does not exist"));
