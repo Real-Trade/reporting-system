@@ -1,4 +1,6 @@
 package com.realtrade.reportingsystem.models;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,14 +19,17 @@ public class Client {
     private int status;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
-//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true)
-//    private Account account;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Portfolio> portfolio;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<ClientOrder> orders;
 
-    public Client() {}
+    public Client() {
+        this.createdAt = OffsetDateTime.now();
+        this.updatedAt = OffsetDateTime.now();
+    }
 
     public Client(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
@@ -107,19 +112,19 @@ public class Client {
 //        this.account = account;
 //    }
 
-    public List<Portfolio> getPortfolio() {
-        return portfolio;
-    }
-
-    public void setPortfolio(List<Portfolio> portfolio) {
-        this.portfolio = portfolio;
-    }
-
-    public List<ClientOrder> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<ClientOrder> orders) {
-        this.orders = orders;
-    }
+//    public List<Portfolio> getPortfolio() {
+//        return portfolio;
+//    }
+//
+//    public void setPortfolio(List<Portfolio> portfolio) {
+//        this.portfolio = portfolio;
+//    }
+//
+//    public List<ClientOrder> getOrders() {
+//        return orders;
+//    }
+//
+//    public void setOrders(List<ClientOrder> orders) {
+//        this.orders = orders;
+//    }
 }

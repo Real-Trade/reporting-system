@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PortfolioService {
@@ -21,20 +21,36 @@ public class PortfolioService {
     }
 
     public Portfolio createPortfolio(Portfolio portfolio) {
-        return portfolioDao.save(portfolio);
+        Optional<Portfolio> portfolioOptional = portfolioDao.findPortfolioByPortfolioName(portfolio.getPortfolioName());
+
+        if(portfolioOptional.isPresent()) {
+            throw new IllegalStateException("Porfolio already exists");
+        } else {
+            Portfolio newPortfolio = new Portfolio();
+            newPortfolio.setPortfolioName(portfolio.getPortfolioName());
+            newPortfolio.setStatus(portfolio.getStatus());
+            return portfolioDao.save(newPortfolio);
+        }
     }
 
-    public Portfolio getPortfolioById(int portfolioId) {
-        return portfolioDao.findById(portfolioId).orElseThrow(() ->
-            new IllegalStateException("portfolio does not exist"));
+    public Optional<Portfolio> getPortfolioById(int portfolioId) {
+        return portfolioDao.findById(portfolioId);
     }
 
-    public List<Portfolio> getPortfoliosByClient(Client client) {
-        return portfolioDao.findAllByClient(client);
+    public List<Portfolio> getPortfoliosByClientId(int clientId) {
+        return portfolioDao.findPortfoliosByClientId(clientId);
     }
 
     public void getProfitSummary(Portfolio porfolio) {
 
+    }
+
+    public List<Portfolio> getAllPortfolios() {
+        return portfolioDao.findAll();
+    }
+
+    public List<Portfolio> getAllActivePortfolios() {
+        return portfolioDao.getAllActivePortfolios();
     }
 
     public List<ClientOrder> getLastActivityDate() {
@@ -55,29 +71,45 @@ public class PortfolioService {
 
     @Transactional
     public boolean closePortfolio(int portfolioId) {
-        Portfolio porfolio = getPortfolioById(portfolioId);
-        porfolio.setStatus(0);
-        portfolioDao.save(porfolio);
-        return true;
+        Optional<Portfolio> porfolio = getPortfolioById(portfolioId);
+        if(porfolio.isPresent()) {
+            porfolio.get().setStatus(0);
+            portfolioDao.save(porfolio.get());
+            return true;
+        } else return false;
     }
 
     @Transactional
-    public Portfolio updatePortfolio(int portfolioId, String porfolioName) {
-        Portfolio porfolio = getPortfolioById(portfolioId);
-        if(!porfolioName.isEmpty()) {
-            porfolio.setPortfolioName(porfolioName);
+    public Optional<Portfolio> updatePortfolio(int portfolioId, Portfolio updatePortfolio) {
+        Optional<Portfolio> portfolioOptional = getPortfolioById(portfolioId);
+        if(portfolioOptional.isPresent()) {
+            portfolioOptional.get().setPortfolioName(updatePortfolio.getPortfolioName());
+            portfolioDao.save(portfolioOptional.get());
         }
-        return portfolioDao.save(porfolio);
+        return portfolioOptional;
     }
 
     @Transactional
-    public Portfolio addOrderToPortofolio(int portfolioId, ClientOrder order) {
-        Portfolio porfolio = getPortfolioById(portfolioId);
-        List<ClientOrder> previousOrders = porfolio.getOrders();
-        previousOrders.add(order);
-        porfolio.setOrders(previousOrders);
-        portfolioDao.save(porfolio);
-        return porfolio;
+    public Optional<Portfolio> addOrderToPortofolio(int portfolioId, ClientOrder order) {
+
+        Optional<Portfolio> portfolioOptional = getPortfolioById(portfolioId);
+        if(portfolioOptional.isPresent()) {
+            List<ClientOrder> previousOrders = portfolioOptional.get().getOrders();
+            previousOrders.add(order);
+            portfolioOptional.get().setOrders(previousOrders);
+            portfolioDao.save(portfolioOptional.get());
+        }
+        return portfolioOptional;
     }
 
+    @Transactional
+    public Optional<Portfolio> addPortofolioClient(int portfolioId, Client client) {
+
+        Optional<Portfolio> portfolioOptional = getPortfolioById(portfolioId);
+        if(portfolioOptional.isPresent()) {
+            portfolioOptional.get().setClient(client);
+            portfolioDao.save(portfolioOptional.get());
+        }
+        return portfolioOptional;
+    }
 }

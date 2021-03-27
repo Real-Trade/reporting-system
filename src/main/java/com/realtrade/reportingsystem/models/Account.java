@@ -18,7 +18,8 @@ public class Account {
     private Client client;
 
     public Account() {
-
+        this.createdAt = OffsetDateTime.now();
+        this.updatedAt = OffsetDateTime.now();
     }
 
     public Account(double balance) {

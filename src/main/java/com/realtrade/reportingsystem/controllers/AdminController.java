@@ -2,6 +2,7 @@ package com.realtrade.reportingsystem.controllers;
 
 import com.realtrade.reportingsystem.models.Admin;
 import com.realtrade.reportingsystem.services.AdminService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class AdminController {
     }
 
     @PostMapping
-    public Admin createAdmin(Admin admin) {
+    public Admin createAdmin(@RequestBody Admin admin) {
         return adminService.createAdmin(admin);
     }
 

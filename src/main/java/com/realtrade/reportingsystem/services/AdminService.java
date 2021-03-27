@@ -23,7 +23,17 @@ public class AdminService  {
         Optional<Admin> adminOptional = adminDao.getAdminByEmail(admin.getEmail());
         if(adminOptional.isPresent()) {
             throw new IllegalStateException("Admin already exists");
-        } else return adminDao.save(admin);
+        } else {
+            Admin newAdmin = new Admin();
+            newAdmin.setFirstName(admin.getFirstName());
+            newAdmin.setLastName(admin.getLastName());
+            newAdmin.setEmail(admin.getEmail());
+            newAdmin.setPassword(admin.getPassword());
+            newAdmin.setStatus(admin.getStatus());
+            newAdmin.setCreatedAt(OffsetDateTime.now());
+            newAdmin.setUpdatedAt(OffsetDateTime.now());
+            return adminDao.save(newAdmin);
+        }
     }
 
     public Optional<Admin> getAdminById(int adminId) {
@@ -44,10 +54,15 @@ public class AdminService  {
         Optional<Admin> adminOptional = getAdminById(adminId);
         if(adminOptional.isPresent()) {
             Admin admin = adminOptional.get();
-            admin.setStatus(adminUpdate.getStatus());
-            admin.setFirstName(adminUpdate.getFirstName());
-            admin.setLastName(adminUpdate.getLastName());
-            admin.setEmail(adminUpdate.getEmail());
+            if(!adminUpdate.getFirstName().isEmpty()) {
+                admin.setFirstName(adminUpdate.getFirstName());
+            }
+            if(!adminUpdate.getLastName().isEmpty()) {
+                admin.setLastName(adminUpdate.getLastName());
+            }
+            if(!adminUpdate.getEmail().isEmpty()) {
+                admin.setEmail(adminUpdate.getEmail());
+            }
             admin.setUpdatedAt(OffsetDateTime.now());
             adminDao.save(admin);
         }

@@ -1,5 +1,7 @@
 package com.realtrade.reportingsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.time.OffsetDateTime;
 

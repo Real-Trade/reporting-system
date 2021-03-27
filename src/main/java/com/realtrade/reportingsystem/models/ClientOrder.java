@@ -28,6 +28,8 @@ public class ClientOrder {
     private Portfolio portfolio;
 
     public ClientOrder() {
+        this.createdAt = OffsetDateTime.now();
+        this.updatedAt = OffsetDateTime.now();
     }
 
     public ClientOrder(double price, int quantity, String side, int cumulativeQuantity,

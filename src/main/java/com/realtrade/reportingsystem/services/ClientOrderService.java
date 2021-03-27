@@ -4,10 +4,12 @@ import com.realtrade.reportingsystem.models.ClientOrder;
 import com.realtrade.reportingsystem.repository.ClientDao;
 import com.realtrade.reportingsystem.repository.ClientOrderDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ClientOrderService {
     private ClientOrderDao clientOrderDao;
 
@@ -25,7 +27,7 @@ public class ClientOrderService {
     }
 
     public List<ClientOrder> getOrderByClientId(int clientId) {
-        return clientOrderDao.findClientOrdersByPortfolioId(clientId);
+        return clientOrderDao.findClientOrdersByClientId(clientId);
     }
 
     public List<ClientOrder> getAllClientOrders() {
@@ -44,24 +46,14 @@ public class ClientOrderService {
         return clientOrderDao.getClientOrdersBySide(side);
     }
 
-    public ClientOrder createClientOrder(ClientOrder clientOrder) {
-        clientOrderDao.save(clientOrder);
-        return clientOrder;
-    }
-
-    public ClientOrder updateClientOrder(ClientOrder clientOrder) {
-        clientOrderDao.save(clientOrder);
-        return clientOrder;
-    }
-
-    public boolean deleteClientOrder(int clientOrderId) {
-        Optional<ClientOrder> clientOrder = getOrderById(clientOrderId);
-        if(clientOrder.isPresent()) {
-            clientOrder.get().setStatus("CANCELLED");
-            clientOrderDao.save(clientOrder.get());
-            return true;
-        }
-        return false;
-    }
+//    public boolean deleteClientOrder(int clientOrderId) {
+//        Optional<ClientOrder> clientOrder = getOrderById(clientOrderId);
+//        if(clientOrder.isPresent()) {
+//            clientOrder.get().setStatus("CANCELLED");
+//            clientOrderDao.save(clientOrder.get());
+//            return true;
+//        }
+//        return false;
+//    }
 
 }

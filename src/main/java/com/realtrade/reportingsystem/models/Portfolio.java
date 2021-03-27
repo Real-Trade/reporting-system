@@ -1,5 +1,7 @@
 package com.realtrade.reportingsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -18,6 +20,7 @@ public class Portfolio {
     private Client client;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
+    @JsonIgnore
     private List<ClientOrder> orders;
 
     public Portfolio(String portfolioName, int status) {
@@ -28,7 +31,8 @@ public class Portfolio {
     }
 
     public Portfolio() {
-
+        this.createdAt = OffsetDateTime.now();
+        this.updatedAt = OffsetDateTime.now();
     }
 
     public int getPortfolioId() {
