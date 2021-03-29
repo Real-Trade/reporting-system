@@ -19,7 +19,6 @@ public class AccountService {
         this.accountDao = accountDao;
     }
 
-    @Transactional
     public Optional<Account> withdrawFunds(int accountId, double amount) {
         Optional<Account> account = getAccountById(accountId);
         if(account.isPresent()) {
@@ -30,7 +29,6 @@ public class AccountService {
         return account;
     }
 
-    @Transactional
     public Optional<Account> depositFunds(int accountId, double amount) {
         Optional<Account> account = getAccountById(accountId);
         if(account.isPresent()) {
@@ -41,22 +39,18 @@ public class AccountService {
         return account;
     }
 
-    @Transactional
     public Optional<Account> getAccountById(int accountId) {
         return accountDao.findById(accountId);
     }
 
-    @Transactional
     public Optional<Account> getAccountByClientId(int clientId) {
         return accountDao.getAccountByClientId(clientId);
     }
 
-    @Transactional
     public List<Account> getAllAccounts() {
         return accountDao.findAll();
     }
 
-    @Transactional
     public Account createAccount(Account account) {
         //generate account number
         //
@@ -64,7 +58,6 @@ public class AccountService {
         return account;
     }
 
-    @Transactional
     public Optional<Account> updateAccount(int accountId, Account account) {
         Optional<Account> existingAccount = accountDao.findById(accountId);
         if(existingAccount.isPresent()) {

@@ -7,7 +7,6 @@ import com.realtrade.reportingsystem.repository.PortfolioDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,7 +68,6 @@ public class PortfolioService {
         return portfolioDao.getOrdersByStatus(status);
     }
 
-    @Transactional
     public boolean closePortfolio(int portfolioId) {
         Optional<Portfolio> porfolio = getPortfolioById(portfolioId);
         if(porfolio.isPresent()) {
@@ -79,7 +77,6 @@ public class PortfolioService {
         } else return false;
     }
 
-    @Transactional
     public Optional<Portfolio> updatePortfolio(int portfolioId, Portfolio updatePortfolio) {
         Optional<Portfolio> portfolioOptional = getPortfolioById(portfolioId);
         if(portfolioOptional.isPresent()) {
@@ -89,7 +86,6 @@ public class PortfolioService {
         return portfolioOptional;
     }
 
-    @Transactional
     public Optional<Portfolio> addOrderToPortofolio(int portfolioId, ClientOrder order) {
 
         Optional<Portfolio> portfolioOptional = getPortfolioById(portfolioId);
@@ -102,7 +98,6 @@ public class PortfolioService {
         return portfolioOptional;
     }
 
-    @Transactional
     public Optional<Portfolio> addPortofolioClient(int portfolioId, Client client) {
 
         Optional<Portfolio> portfolioOptional = getPortfolioById(portfolioId);
