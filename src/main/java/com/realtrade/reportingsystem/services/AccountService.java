@@ -53,7 +53,6 @@ public class AccountService {
 
     public Account createAccount(Account account) {
         //generate account number
-        //
         accountDao.save(account);
         return account;
     }

@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/portfolio")
+@CrossOrigin("*")
 public class PortfolioController {
     private PortfolioService portfolioService;
 

@@ -39,6 +39,7 @@ public class ClientController {
     }
 
     @PutMapping(path = "/{clientId}/update")
+    @CrossOrigin("*")
     public Client updateClient(@PathVariable(name = "clientId")int clientId, @RequestBody Client client) {
         return clientService.updateClient(clientId, client).orElseThrow();
     }
