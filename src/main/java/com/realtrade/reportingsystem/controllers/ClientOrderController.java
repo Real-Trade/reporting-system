@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/order")
-@CrossOrigin("*")
+@CrossOrigin
 public class ClientOrderController {
     private ClientOrderService orderService;
 

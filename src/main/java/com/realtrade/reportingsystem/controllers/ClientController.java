@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/client")
+@CrossOrigin
 public class ClientController {
     private ClientService clientService;
 
@@ -39,7 +40,6 @@ public class ClientController {
     }
 
     @PutMapping(path = "/{clientId}/update")
-    @CrossOrigin("*")
     public Client updateClient(@PathVariable(name = "clientId")int clientId, @RequestBody Client client) {
         return clientService.updateClient(clientId, client).orElseThrow();
     }
